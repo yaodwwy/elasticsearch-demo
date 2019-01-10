@@ -1,0 +1,6 @@
+# 优先加载后会被后加载的覆盖 以下是测试
+server:
+  port: 80
+spring:
+  jpa:
+    show-sql: false

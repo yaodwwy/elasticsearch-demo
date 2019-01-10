@@ -14,6 +14,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -64,7 +69,11 @@ public class JPATests {
     @Test
     public void TestFetchQuery() {
         Specification<Detail> spec = (Specification<Detail>) (root, query, cb) -> {
-            root.fetch("orders");
+            // 统计的时候不fetch
+            // 如果分页, 所有数据会加载到内存中再分! 注意!
+            if (!Long.class.equals(query.getResultType())) {
+                root.fetch("orders");
+            }
             return null;
         };
         List<Detail> all = detailRepo.findAll(spec, PageRequest.of(1, 20)).getContent();
@@ -76,7 +85,9 @@ public class JPATests {
     // @Transactional
     public void TestJoinQuery() {
         Specification<Orders> spec = (Specification<Orders>) (root, query, cb) -> {
-            root.fetch("details");
+            if (!Long.class.equals(query.getResultType())) {
+                root.fetch("details");
+            }
             return null;
         };
 
@@ -84,7 +95,7 @@ public class JPATests {
         // 所以以下注释内容将会抛出 InvalidDataAccessApiUsageException count无法计算分页信息
         // List<Orders> all = ordersRepo.findAll(spec, PageRequest.of(1, 25)).getContent();
 
-        List<Orders> all = ordersRepo.findAll(spec);
+        List<Orders> all = ordersRepo.findAll(spec, PageRequest.of(1, 20)).getContent();
 
         all.forEach(System.out::println);
         all.get(0).getDetails().forEach(System.out::println);
