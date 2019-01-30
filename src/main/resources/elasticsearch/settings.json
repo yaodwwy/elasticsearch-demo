@@ -1,16 +1,26 @@
 {
-  "settings": {
+  "number_of_replicas": 1,
+  "index": {
     "analysis": {
+      "search_analyzer": {
+        "default": {
+          "type": "ik_max_word"
+        }
+      },
       "filter": {
         "my_synonym_filter": {
           "type": "synonym",
-          "synonyms_path" : "analysis/syno.dic"
+          "synonyms_path": "analysis/syno.dic"
         }
       },
       "analyzer": {
+        "default": {
+          "type": "ik_max_word"
+        },
         "my_synonyms": {
-          "tokenizer": "ik_smart",
+          "tokenizer": "ik_max_word",
           "filter": [
+            "lowercase",
             "my_synonym_filter"
           ]
         }

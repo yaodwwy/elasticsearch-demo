@@ -24,7 +24,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Document(indexName = "order_details_index",
-        shards = 1, replicas = 0, refreshInterval = "-1")
+        shards = 5, replicas = 1, refreshInterval = "-1")
 public class OrderDetailsIndex {
     @Id
     private UUID id;

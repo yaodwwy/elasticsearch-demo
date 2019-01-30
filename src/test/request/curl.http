@@ -1,0 +1,181 @@
+#中文分词测试
+# 参考: https://github.com/medcl/elasticsearch-analysis-ik
+#Analyzer: ik_smart , ik_max_word , Tokenizer: ik_smart , ik_max_word
+
+GET {{host}}/_analyze
+Content-Type: application/json
+
+{
+  "text": "中华人民共和国爱吃土豆",
+  "analyzer": "ik_smart"
+}
+
+###
+
+PUT {{host}}/index
+
+###
+
+POST {{host}}/index/fulltext/1
+Content-Type: application/json
+
+{
+  "content": "美国留给伊拉克的是个烂摊子吗"
+}
+
+###
+
+POST {{host}}/index/fulltext/2
+Content-Type: application/json
+
+{
+  "content": "公安部：各地校车将享最高路权"
+}
+
+###
+POST {{host}}/index/fulltext/3
+Content-Type: application/json
+
+{
+  "content": "中韩渔警冲突调查：韩警平均每天扣1艘中国渔船"
+}
+
+###
+POST {{host}}/index/fulltext/4
+Content-Type: application/json
+
+{
+  "content": "中国驻洛杉矶领事馆遭亚裔男子枪击 嫌犯已自首"
+}
+
+###
+
+
+POST {{host}}/index/fulltext/_search
+Content-Type: application/json
+
+{
+  "query": {
+    "match": {
+      "content": "中国"
+    }
+  },
+  "highlight": {
+    "pre_tags": [
+      "<tag1>",
+      "<tag2>"
+    ],
+    "post_tags": [
+      "</tag1>",
+      "</tag2>"
+    ],
+    "fields": {
+      "content": {}
+    }
+  }
+}
+
+### 设置索引默认搜索分词
+# 1、更新索引设置：将副本减至0，修改索引分析器为ik_max_word和检索分词器为ik_smart
+# 2、需要先将索引关闭，然后再PUT setings
+
+###
+POST {{host}}/syno_index/_close
+
+###
+PUT  {{host}}/syno_index/_settings
+Content-Type: application/json
+
+{
+  "number_of_replicas": 0,
+  "index": {
+    "analysis.analyzer.default.type": "ik_max_word",
+    "analysis.search_analyzer.default.type": "ik_max_word"
+  }
+}
+
+####################################### 设置已存在的索引自定义同义词分词 #######################################
+###
+PUT {{host}}/syno_index
+
+###
+POST {{host}}/syno_index/_close
+
+###
+GET  {{host}}/syno_index/_settings
+
+###
+PUT  {{host}}/_settings
+Content-Type: application/json
+
+{
+  "number_of_replicas": 1,
+  "index": {
+    "analysis": {
+      "filter": {
+        "my_synonym_filter": {
+          "type": "synonym",
+          "synonyms_path": "analysis/syno.dic"
+        }
+      },
+      "analyzer": {
+        "my_synonyms": {
+          "tokenizer": "ik_max_word",
+          "filter": [
+            "lowercase",
+            "my_synonym_filter"
+          ]
+        }
+      }
+    }
+  }
+}
+
+###
+POST {{host}}/syno_index/_open
+
+###
+
+GET {{host}}/syno_index/_analyze
+Content-Type: application/json
+
+{
+  "text": "我爱吃土豆",
+  "analyzer": "my_synonyms"
+}
+
+###添加数据
+
+POST {{host}}/syno_index/synoindex/1
+Content-Type: application/json
+
+{
+  "id":1,
+  "content": "我爱吃番茄"
+}
+###
+POST {{host}}/syno_index/synoindex/2
+Content-Type: application/json
+
+{
+  "id":2,
+  "content": "我爱吃土豆"
+}
+
+###
+
+GET {{host}}/syno_index/_analyzver?analyzer=my_synonyms
+
+###
+
+GET {{host}}/syno_index/_search
+Content-Type: application/json
+
+{
+  "query":{
+    "match":{
+      "name": "马铃薯"
+    }
+  }
+}
+###

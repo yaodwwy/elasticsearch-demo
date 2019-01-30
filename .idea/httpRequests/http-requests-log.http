@@ -1,0 +1,577 @@
+PUT http://node205:9200/_settings
+Content-Type: application/json
+
+{
+  "number_of_replicas": 1,
+  "index": {
+    "analysis": {
+      "filter": {
+        "my_synonym_filter": {
+          "type": "synonym",
+          "synonyms_path": "analysis/syno.dic"
+        }
+      },
+      "analyzer": {
+        "my_synonyms": {
+          "tokenizer": "ik_max_word",
+          "filter": [
+            "lowercase",
+            "my_synonym_filter"
+          ]
+        }
+      }
+    }
+  }
+}
+
+<> 2019-01-30T101928.404.json
+
+###
+
+PUT http://node205:9200/_settings
+Content-Type: application/json
+
+{
+  "number_of_replicas": 0,
+  "index": {
+    "analysis": {
+      "filter": {
+        "my_synonym_filter": {
+          "type": "synonym",
+          "synonyms_path": "analysis/syno.dic"
+        }
+      },
+      "analyzer": {
+        "my_synonyms": {
+          "tokenizer": "ik_max_word",
+          "filter": [
+            "lowercase",
+            "my_synonym_filter"
+          ]
+        }
+      }
+    }
+  }
+}
+
+<> 2019-01-30T101854.400.json
+
+###
+
+GET http://node205:9200/syno_index/_search
+Content-Type: application/json
+
+{
+  "query":{
+    "match":{
+      "name": "马铃薯"
+    }
+  }
+}
+
+<> 2019-01-30T100048.200.json
+
+###
+
+POST http://node205:9200/syno_index/synoindex/2
+Content-Type: application/json
+
+{
+  "id":2,
+  "content": "我爱吃土豆"
+}
+
+<> 2019-01-30T100044.201.json
+
+###
+
+POST http://node205:9200/syno_index/synoindex/1
+Content-Type: application/json
+
+{
+  "id":1,
+  "content": "我爱吃番茄"
+}
+
+<> 2019-01-30T100040.201.json
+
+###
+
+GET http://node205:9200/syno_index/_analyzer?analyzer=my_synonyms
+
+<> 2019-01-30T095515.405.json
+
+###
+
+GET http://node205:9200/syno_index/_search?q=西红柿&analyzer=my_synonyms
+
+<> 2019-01-30T095444.200.json
+
+###
+
+GET http://node205:9200/syno_index/_search
+Content-Type: application/json
+
+{
+    "query":{
+        "match":{
+            "name": "西红柿"
+        },
+      "analyzer": "my_synonyms"
+    }
+}
+
+<> 2019-01-30T095346.400.json
+
+###
+
+GET http://node205:9200/syno_index/_search
+Content-Type: application/json
+
+{
+    "query":{
+        "match":{
+            "name": "西红柿土豆"
+        }
+    }
+}
+
+<> 2019-01-30T095135.200.json
+
+###
+
+GET http://node205:9200/syno_index/_search
+Content-Type: application/json
+
+{
+    "query":{
+        "match":{
+            "name": "西红柿"
+        }
+    }
+}
+
+<> 2019-01-30T095101.200.json
+
+###
+
+POST http://node205:9200/syno_index/synoindex/2
+Content-Type: application/json
+
+{
+  "id":2,
+  "name": "我爱吃土豆"
+}
+
+<> 2019-01-30T095058.201.json
+
+###
+
+POST http://node205:9200/syno_index/synoindex/1
+Content-Type: application/json
+
+{
+  "id":1,
+  "name": "我爱吃番茄"
+}
+
+<> 2019-01-30T095054.201.json
+
+###
+
+GET http://node205:9200/syno_index/_analyze
+Content-Type: application/json
+
+{
+  "text": "我爱吃土豆",
+  "analyzer": "my_synonyms"
+}
+
+<> 2019-01-30T095050.200.json
+
+###
+
+POST http://node205:9200/syno_index/_open
+
+<> 2019-01-30T095047.200.json
+
+###
+
+PUT http://node205:9200/syno_index/_settings
+Content-Type: application/json
+
+{
+  "number_of_replicas": 0,
+  "index": {
+    "analysis": {
+      "filter": {
+        "my_synonym_filter": {
+          "type": "synonym",
+          "synonyms_path": "analysis/syno.dic"
+        }
+      },
+      "analyzer": {
+        "my_synonyms": {
+          "tokenizer": "ik_max_word",
+          "filter": [
+            "lowercase",
+            "my_synonym_filter"
+          ]
+        }
+      }
+    }
+  }
+}
+
+<> 2019-01-30T095043.200.json
+
+###
+
+GET http://node205:9200/syno_index/_settings
+
+<> 2019-01-30T095038.200.json
+
+###
+
+POST http://node205:9200/syno_index/_close
+
+<> 2019-01-30T095035.200.json
+
+###
+
+PUT http://node205:9200/syno_index
+
+<> 2019-01-30T095029.200.json
+
+###
+
+PUT http://node205:9200/syno_index/_settings
+Content-Type: application/json
+
+{
+  "number_of_replicas": 0,
+  "index": {
+    "analysis": {
+      "filter": {
+        "my_synonym_filter": {
+          "type": "synonym",
+          "synonyms_path": "analysis/syno.dic"
+        }
+      },
+      "analyzer": {
+        "my_synonyms": {
+          "tokenizer": "ik_max_word",
+          "filter": [
+            "lowercase",
+            "my_synonym_filter"
+          ]
+        }
+      }
+    }
+  }
+}
+
+<> 2019-01-30T094938.404.json
+
+###
+
+GET http://node205:9200/syno_index/_settings
+
+<> 2019-01-30T094931.404.json
+
+###
+
+GET http://node205:9200/syno_index/_search
+Content-Type: application/json
+
+{
+  "query":{
+    "match":{
+      "name": "土豆"
+    }
+  }
+}
+
+<> 2019-01-30T094746.200.json
+
+###
+
+GET http://node205:9200/syno_index/_search
+Content-Type: application/json
+
+{
+  "query":{
+    "match":{
+      "name": "马铃薯"
+    }
+  }
+}
+
+<> 2019-01-30T094739.200.json
+
+###
+
+GET http://node205:9200/syno_index/_search
+Content-Type: application/json
+
+{
+    "query":{
+        "match":{
+            "name": "西红柿"
+        }
+    }
+}
+
+<> 2019-01-30T094735.200.json
+
+###
+
+GET http://node205:9200/syno_index/_search?q=西红柿
+
+<> 2019-01-30T094652.200.json
+
+###
+
+POST http://node205:9200/syno_index/synoindex/1
+Content-Type: application/json
+
+{
+  "id":1,
+  "name": "我爱吃番茄"
+}
+
+<> 2019-01-30T094647.200.json
+
+###
+
+POST http://node205:9200/syno_index/synoindex/2
+Content-Type: application/json
+
+{
+  "id":2,
+  "name": "我爱吃土豆"
+}
+
+<> 2019-01-30T094646.201.json
+
+###
+
+POST http://node205:9200/syno_index/synoindex
+Content-Type: application/json
+
+{
+  "id":1,
+  "name": "我爱吃番茄"
+}
+
+<> 2019-01-30T094634.201.json
+
+###
+
+POST http://node205:9200/syno_index/synoindex
+Content-Type: application/json
+
+{
+  "id":1,
+  "name": "我爱吃土豆"
+}
+
+<> 2019-01-30T094624.201.json
+
+###
+
+GET http://node205:9200/syno_index/_search?q=西红柿
+
+<> 2019-01-30T094351.200.json
+
+###
+
+GET http://node205:9200/syno_index/_analyze
+Content-Type: application/json
+
+{
+  "text": "我爱吃土豆",
+  "analyzer": "my_synonyms"
+}
+
+<> 2019-01-30T094342.200.json
+
+###
+
+POST http://node205:9200/syno_index/_open
+
+<> 2019-01-30T094338.200.json
+
+###
+
+PUT http://node205:9200/syno_index/_settings
+Content-Type: application/json
+
+{
+  "number_of_replicas": 0,
+  "index": {
+    "analysis.analyzer.default.type": "ik_max_word",
+    "analysis.search_analyzer.default.type": "ik_max_word"
+  }
+}
+
+<> 2019-01-30T094329.200.json
+
+###
+
+PUT http://node205:9200/syno_index/_settings
+Content-Type: application/json
+
+{
+  "number_of_replicas": 0,
+  "index": {
+    "analysis.analyzer.default.type": "my_synonyms",
+    "analysis.search_analyzer.default.type": "my_synonyms"
+  }
+}
+
+<> 2019-01-30T094256.400.json
+
+###
+
+POST http://node205:9200/syno_index/_close
+
+<> 2019-01-30T094255.200.json
+
+###
+
+GET http://node205:9200/syno_index/_search?q=西红柿
+
+<> 2019-01-30T094216.200.json
+
+###
+
+GET http://node205:9200/syno_index/_search?q=番茄
+
+<> 2019-01-30T094206.200.json
+
+###
+
+GET http://node205:9200/syno_index/_search?q=马铃薯
+
+<> 2019-01-30T094158.200.json
+
+###
+
+GET http://node205:9200/syno_index/_search?q=土豆
+
+<> 2019-01-30T094154.200.json
+
+###
+
+POST http://node205:9200/syno_index/synoindex
+Content-Type: application/json
+
+{
+  "id":1,
+  "name": "我爱吃番茄"
+}
+
+<> 2019-01-30T094111.201.json
+
+###
+
+POST http://node205:9200/syno_index/synoindex/1
+Content-Type: application/json
+
+{
+  "id":1,
+  "name": "我爱吃番茄"
+}
+
+<> 2019-01-30T094057.200.json
+
+###
+
+GET http://node205:9200/syno_index/_search?q=土豆
+
+<> 2019-01-30T094047.200.json
+
+###
+
+POST http://node205:9200/syno_index/synoindex/1
+Content-Type: application/json
+
+{
+  "id":1,
+  "name": "我爱吃新土豆"
+}
+
+<> 2019-01-30T094040.200.json
+
+###
+
+GET http://node205:9200/syno_index/_search?q=马铃薯
+
+<> 2019-01-30T094023.200.json
+
+###
+
+GET http://node205:9200/syno_index/_search?q=土豆
+
+<> 2019-01-30T094001.200.json
+
+###
+
+POST http://node205:9200/syno_index/synoindex/1
+Content-Type: application/json
+
+{
+  "name": "我爱吃新土豆"
+}
+
+<> 2019-01-30T093948.200.json
+
+###
+
+GET http://node205:9200/syno_index/_search?q=马铃薯
+
+<> 2019-01-30T093918.200.json
+
+###
+
+POST http://node205:9200/syno_index/synoindex/1
+Content-Type: application/json
+
+{
+  "name": "我爱吃新土豆"
+}
+
+<> 2019-01-30T093914.201.json
+
+###
+
+POST http://node205:9200/syno_index/1
+Content-Type: application/json
+
+{
+  "name": "我爱吃新土豆"
+}
+
+<> 2019-01-30T093904.400.json
+
+###
+
+GET http://node205:9200/syno_index/_search?q=马铃薯
+
+<> 2019-01-30T093826.200.json
+
+###
+
+GET http://node205:9200/syno_index/_analyze
+Content-Type: application/json
+
+{
+  "text": "我爱吃土豆",
+  "analyzer": "my_synonyms"
+}
+
+<> 2019-01-30T093819.200.json
+
+###
+

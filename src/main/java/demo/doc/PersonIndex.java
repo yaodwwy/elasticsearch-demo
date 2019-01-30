@@ -17,7 +17,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Document(indexName = "person_index",
-        shards = 1, replicas = 0, refreshInterval = "-1")
+        shards = 5, replicas = 1, refreshInterval = "-1")
 public class PersonIndex {
     @Id
     private UUID id;

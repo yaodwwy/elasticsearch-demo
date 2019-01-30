@@ -18,6 +18,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 
 import static org.hamcrest.Matchers.greaterThan;
@@ -108,6 +109,8 @@ public class ElasticsearchApplicationTests {
         CriteriaQuery query = new CriteriaQuery(
                 new Criteria("name")
                         .contains(expectedWord));
+        Map setting = operations.getSetting(SynoIndex.class);
+        System.out.println(setting);
         operations.queryForList(query, SynoIndex.class).forEach(System.out::println);
     }
 }

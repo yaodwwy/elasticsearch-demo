@@ -5,12 +5,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ServiceBean {
+public class ServiceImpl {
 
     @Bean
-    public CommandLineRunner initServiceBean() {
+    public CommandLineRunner init() {
         return (args) -> {
-            System.out.println("ServiceBean bean");
+            System.out.println("@Service Bean init");
         };
     }
 }

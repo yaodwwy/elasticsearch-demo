@@ -29,9 +29,9 @@ public class ElasticsearchApplication {
     }
 
     @Bean
-    public CommandLineRunner initElasticsearchApplication(ElasticsearchOperations operations) {
+    public CommandLineRunner init() {
         return (args) -> {
-            System.out.println("ElasticsearchApplication bean");
+            System.out.println("ElasticsearchApplicationBean init");
         };
     }
 }

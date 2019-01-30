@@ -5,6 +5,8 @@ import demo.repo.ConferenceRepository;
 import demo.repo.OrderIndexRepository;
 import demo.repo.SynoIndexRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.geo.GeoPoint;
@@ -33,12 +35,10 @@ public class ElasticsearchConfig {
     @PostConstruct
     public void insertDataSample() {
 
-        operations.deleteIndex("syno_index");
-        operations.deleteIndex("person_index");
-        operations.deleteIndex("order_details_index");
-        operations.deleteIndex("conference_index");
-
         // Remove all documents
+        synoIndexRepository.deleteAll();
+        operations.refresh(SynoIndex.class);
+
         conferenceRepository.deleteAll();
         operations.refresh(Conference.class);
 
@@ -56,5 +56,12 @@ public class ElasticsearchConfig {
                 .keywords(Arrays.asList("java", "spring")).location(new GeoPoint(50.0646501D, 19.9449799)).build());
 
         synoIndexRepository.save(new SynoIndex(null, "我爱吃土豆"));
+    }
+
+    @Bean
+    public CommandLineRunner init() {
+        return (args) -> {
+            System.out.println("@Configuration Bean init");
+        };
     }
 }

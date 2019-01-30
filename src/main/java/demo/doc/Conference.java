@@ -34,7 +34,7 @@ import static org.springframework.data.elasticsearch.annotations.FieldType.Date;
 @Data
 @Builder
 @Document(indexName = "conference_index",
-        shards = 1, replicas = 0, refreshInterval = "-1")
+        shards = 5, replicas = 1, refreshInterval = "-1")
 public class Conference {
     private @Id
     String id;
