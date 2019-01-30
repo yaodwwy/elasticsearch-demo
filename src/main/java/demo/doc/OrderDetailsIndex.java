@@ -23,10 +23,9 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(indexName = "order_details", type = "order_detail",
-        shards = 3, replicas = 0, refreshInterval = "-1"
-)
-public class OrderIndex {
+@Document(indexName = "order_details_index",
+        shards = 1, replicas = 0, refreshInterval = "-1")
+public class OrderDetailsIndex {
     @Id
     private UUID id;
     @Field(type = FieldType.Integer)
@@ -37,21 +36,21 @@ public class OrderIndex {
     @Field(type = FieldType.Text, analyzer = "ik_max_word"
             , searchAnalyzer = "ik_max_word")
     private String name;
-    @Field(type = FieldType.Object, analyzer = "ik_max_word"
+    @Field(type = FieldType.Auto, analyzer = "ik_max_word"
             , searchAnalyzer = "ik_max_word")
-    private Set<DetailIndex> detail;
+    private Set<DetailIndex> detail = new HashSet<>();
 
 
-    public static Set<OrderIndex> orderToIndex(Collection<Orders> orders) {
-        Set<OrderIndex> set = new HashSet<>();
+    public static Set<OrderDetailsIndex> orderToIndex(Collection<Orders> orders) {
+        Set<OrderDetailsIndex> set = new HashSet<>();
         orders.forEach(order -> {
-            OrderIndex orderIndex = OrderIndex.builder()
+            OrderDetailsIndex orderDetailsIndex = OrderDetailsIndex.builder()
                     .id(order.getId())
                     .age(18).bio("bio")
                     .name(order.getName())
-                    .detail(OrderIndex.detailToIndex(order.getDetails()))
+                    .detail(OrderDetailsIndex.detailToIndex(order.getDetails()))
                     .build();
-            set.add(orderIndex);
+            set.add(orderDetailsIndex);
         });
         return set;
     }
@@ -68,15 +67,13 @@ public class OrderIndex {
         return set;
     }
 
+    @Builder
+    private static class DetailIndex {
+        @Field(type = FieldType.Auto)
+        private UUID id;
+        @Field(type = FieldType.Text, analyzer = "ik_max_word"
+                , searchAnalyzer = "ik_max_word")
+        private String name;
+    }
 
-}
-
-@Data
-@Builder
-class DetailIndex {
-    @Field(type = FieldType.Keyword)
-    private UUID id;
-    @Field(type = FieldType.Text, analyzer = "ik_max_word"
-            , searchAnalyzer = "ik_max_word")
-    private String name;
 }

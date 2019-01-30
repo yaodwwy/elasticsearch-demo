@@ -1,0 +1,20 @@
+{
+  "settings": {
+    "analysis": {
+      "filter": {
+        "my_synonym_filter": {
+          "type": "synonym",
+          "synonyms_path" : "analysis/syno.dic"
+        }
+      },
+      "analyzer": {
+        "my_synonyms": {
+          "tokenizer": "ik_smart",
+          "filter": [
+            "my_synonym_filter"
+          ]
+        }
+      }
+    }
+  }
+}

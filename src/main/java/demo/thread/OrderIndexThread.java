@@ -1,6 +1,6 @@
 package demo.thread;
 
-import demo.doc.OrderIndex;
+import demo.doc.OrderDetailsIndex;
 import demo.entity.*;
 import demo.repo.OrderIndexRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -65,7 +65,7 @@ public class OrderIndexThread implements Runnable {
         //当前页码  小于等于 总分页数的时候进行
         for (; page <= all.getTotalPages(); page++) {
             List<Orders> content = all.getContent();
-            Set<OrderIndex> orderIndices = OrderIndex.orderToIndex(content);
+            Set<OrderDetailsIndex> orderIndices = OrderDetailsIndex.orderToIndex(content);
             orderIndexRepository.saveAll(orderIndices);
             try {
                 Thread.sleep(3_000);

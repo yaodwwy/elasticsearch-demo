@@ -18,10 +18,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -100,5 +97,8 @@ public class JPATests {
         all.forEach(System.out::println);
         all.get(0).getDetails().forEach(System.out::println);
     }
+
+
+
 }
 

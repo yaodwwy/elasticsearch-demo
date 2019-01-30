@@ -2,20 +2,20 @@
 # 参考: https://github.com/medcl/elasticsearch-analysis-ik
 #Analyzer: ik_smart , ik_max_word , Tokenizer: ik_smart , ik_max_word
 
-GET http://node202:9200/_analyze
+GET http://node205:9200/_analyze
 Content-Type: application/json
 
 {
-  "text": "中华人民共和国","analyzer":"ik_smart"
+  "text": "中华人民共和国爱吃土豆","analyzer":"ik_smart"
 }
 
 ###
 
-PUT http://node202:9200/index
+PUT http://node205:9200/index
 
 ###
 
-POST http://node202:9200/index/fulltext/1
+POST http://node205:9200/index/fulltext/1
 Content-Type: application/json
 
 {
@@ -24,7 +24,7 @@ Content-Type: application/json
 
 ###
 
-POST http://node202:9200/index/fulltext/2
+POST http://node205:9200/index/fulltext/2
 Content-Type: application/json
 
 {
@@ -32,7 +32,7 @@ Content-Type: application/json
 }
 
 ###
-POST http://node202:9200/index/fulltext/3
+POST http://node205:9200/index/fulltext/3
 Content-Type: application/json
 
 {
@@ -40,7 +40,7 @@ Content-Type: application/json
 }
 
 ###
-POST http://node202:9200/index/fulltext/4
+POST http://node205:9200/index/fulltext/4
 Content-Type: application/json
 
 {
@@ -50,7 +50,7 @@ Content-Type: application/json
 ###
 
 
-POST http://node202:9200/index/fulltext/_search
+POST http://node205:9200/index/fulltext/_search
 Content-Type: application/json
 
 {
@@ -76,6 +76,6 @@ Content-Type: application/json
 
 
 ###
-GET http://node202:9200/order_details/_mapping
+GET http://node205:9200/order_details/_mapping
 
 ###

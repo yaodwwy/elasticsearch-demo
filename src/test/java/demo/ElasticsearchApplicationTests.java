@@ -1,6 +1,10 @@
 package demo;
 
 import demo.doc.Conference;
+import demo.doc.OrderDetailsIndex;
+import demo.doc.PersonIndex;
+import demo.doc.SynoIndex;
+import demo.repo.PersonRepository;
 import demo.thread.OrderIndexThread;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,7 +36,15 @@ public class ElasticsearchApplicationTests {
     private ExecutorService consumerQueueThreadPool;
     @Autowired
     private OrderIndexThread orderIndexThread;
+    @Autowired
+    private PersonRepository personRepo;
 
+    @Test
+    public void deleteIndex() {
+        operations.deleteIndex(Conference.class);
+        operations.deleteIndex(OrderDetailsIndex.class);
+        operations.deleteIndex(PersonIndex.class);
+    }
     /**
      * 测试全量索引
      */
@@ -51,16 +63,14 @@ public class ElasticsearchApplicationTests {
 
         String expectedDate = "2014-10-29";
         String expectedWord = "java";
-        org.springframework.data.elasticsearch.core.query.CriteriaQuery query = new org.springframework.data.elasticsearch.core.query.CriteriaQuery(
+        CriteriaQuery query = new CriteriaQuery(
                 new Criteria("keywords")
                         .contains(expectedWord)
                         .and(new Criteria("date")
                                 .greaterThanEqual(expectedDate)));
 
         List<Conference> result = operations.queryForList(query, Conference.class);
-        result.forEach(conference -> {
-            System.out.println(conference);
-        });
+        result.forEach(System.out::println);
         assertThat(result, hasSize(3));
 
         for (Conference conference : result) {
@@ -79,6 +89,26 @@ public class ElasticsearchApplicationTests {
         List<Conference> result = operations.queryForList(query, Conference.class);
 
         assertThat(result, hasSize(2));
+    }
+
+    @Test
+    public void reCreateIndex() {
+        operations.deleteIndex("syno_index");
+        operations.deleteIndex("person_index");
+        operations.deleteIndex("order_details_index");
+        operations.deleteIndex("conference_index");
+//        operations.createIndex(PersonIndex.class);
+    }
+
+    @Test
+    public void 同义词检索() {
+
+        String expectedWord = "马铃薯";
+//        String expectedWord = "土豆";
+        CriteriaQuery query = new CriteriaQuery(
+                new Criteria("name")
+                        .contains(expectedWord));
+        operations.queryForList(query, SynoIndex.class).forEach(System.out::println);
     }
 }
 

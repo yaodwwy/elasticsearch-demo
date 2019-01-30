@@ -1,12 +1,18 @@
 package demo;
 
+import demo.doc.PersonIndex;
+import demo.doc.SynoIndex;
 import demo.entity.Detail;
 import demo.entity.Orders;
 import demo.entity.OrdersRepo;
+import demo.repo.PersonRepository;
+import demo.repo.SynoIndexRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -23,25 +29,9 @@ public class ElasticsearchApplication {
     }
 
     @Bean
-    public CommandLineRunner init(OrdersRepo ordersRepo) {
+    public CommandLineRunner initElasticsearchApplication(ElasticsearchOperations operations) {
         return (args) -> {
-            // 初始化测试数据
-            Set<Orders> orders = new HashSet<>();
-            for (int i = 0; i < 100; i++) {
-                Orders order = new Orders();
-                Set<Detail> details = new HashSet<>();
-                for (int j = 0; j < 10; j++) {
-                    Detail detail = new Detail();
-                    detail.setName("商品编号" + i + ":" + j);
-                    detail.setOrders(order);
-                    details.add(detail);
-                }
-                order.setName("订单编号" + i);
-                order.setDetails(details);
-                order.setTime(new Date());
-                orders.add(order);
-            }
-            ordersRepo.saveAll(orders);
+            System.out.println("ElasticsearchApplication bean");
         };
     }
 }

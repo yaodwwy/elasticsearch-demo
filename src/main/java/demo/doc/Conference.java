@@ -33,10 +33,9 @@ import static org.springframework.data.elasticsearch.annotations.FieldType.Date;
  */
 @Data
 @Builder
-@Document(indexName = "conference-index", type = "geo-class-point-type",
+@Document(indexName = "conference_index",
         shards = 1, replicas = 0, refreshInterval = "-1")
 public class Conference {
-
     private @Id
     String id;
     private String name;
@@ -44,20 +43,4 @@ public class Conference {
     String date;
     private GeoPoint location;
     private List<String> keywords;
-
-    // do not remove it
-    public Conference() {
-    }
-
-    // do not remove it - work around for lombok generated constructor for all params
-    public Conference(String id, String name, String date, GeoPoint location, List<String> keywords) {
-
-        this.id = id;
-        this.name = name;
-        this.date = date;
-        this.location = location;
-        this.keywords = keywords;
-    }
-
-
 }
