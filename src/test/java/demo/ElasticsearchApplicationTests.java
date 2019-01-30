@@ -104,6 +104,7 @@ public class ElasticsearchApplicationTests {
     @Test
     public void 同义词检索() {
 
+//        String expectedWord = "td";
         String expectedWord = "马铃薯";
 //        String expectedWord = "土豆";
         CriteriaQuery query = new CriteriaQuery(

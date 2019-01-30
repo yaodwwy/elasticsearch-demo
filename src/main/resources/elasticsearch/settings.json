@@ -8,21 +8,42 @@
         }
       },
       "filter": {
-        "my_synonym_filter": {
+        "synonym_filter": {
           "type": "synonym",
-          "synonyms_path": "analysis/syno.dic"
+          "synonyms_path": "analysis/syno.dic",
+          "dynamic_reload": true,
+          "reload_interval": "30s"
+        },
+        "pinyin_filter": {
+          "type": "pinyin",
+          "ignore_case": true
         }
       },
       "analyzer": {
         "default": {
           "type": "ik_max_word"
         },
-        "my_synonyms": {
+        "ik_all": {
           "tokenizer": "ik_max_word",
           "filter": [
             "lowercase",
-            "my_synonym_filter"
+            "pinyin_filter",
+            "synonym_filter"
           ]
+        },
+        "pinyin_analyzer": {
+          "tokenizer" : "pinyin"
+        }
+      },
+      "tokenizer" : {
+        "pinyin" : {
+          "type" : "pinyin",
+          "keep_separate_first_letter" : false,
+          "keep_full_pinyin" : true,
+          "keep_original" : true,
+          "limit_first_letter_length" : 16,
+          "lowercase" : true,
+          "remove_duplicated_term" : true
         }
       }
     }
