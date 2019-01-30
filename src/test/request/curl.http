@@ -140,8 +140,8 @@ GET {{host}}/syno_index/_analyze
 Content-Type: application/json
 
 {
-  "text": "我爱吃土豆",
-  "analyzer": "my_synonyms"
+  "text": "我爱吃番茄",
+  "analyzer": "ik_all"
 }
 
 ###添加数据
