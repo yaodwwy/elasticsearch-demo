@@ -18,7 +18,7 @@ public class ESTest {
     public void client() throws UnknownHostException {
         Settings settings = Settings.builder()
                 .put("cluster.name", "docker-cluster").build();
-        TransportClient client = new PreBuiltTransportClient(settings).addTransportAddress(new TransportAddress(InetAddress.getByName("test.gomro.cn"), 9300));
+        TransportClient client = new PreBuiltTransportClient(settings).addTransportAddress(new TransportAddress(InetAddress.getByName("test.adbyte.cn"), 9300));
         SearchResponse inquiry_index = client.prepareSearch("inquiry_index").execute().actionGet();
         System.out.println(inquiry_index.getHits().totalHits);
         client.close();
